@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneMgr : MonoBehaviour
+public class SceneChange : MonoBehaviour
 {
     // name of scene to link door to
     public string targetScene;
