@@ -16,6 +16,7 @@ public class DialogueReader : MonoBehaviour
     private string[] lines;         // contents of document
     private bool inDialogue, printingLine;
     private int i;                  // index in file; line number
+    private string line;
 
     private void Awake ()
     {
@@ -46,14 +47,12 @@ public class DialogueReader : MonoBehaviour
         portrait = box.transform.GetChild(1).GetComponent<Image>();
         nameBox = box.transform.GetChild(2).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>();
         textBox = box.transform.GetChild(2).GetChild(1).GetComponent<TextMeshProUGUI>();
-
-
     }
 
     public void ReadDialogue(string filePath)
     {
-        
-
+        // reset i
+        i = -1;
         // read file into array
         lines = Resources.Load<TextAsset>(filePath).text.Split("\n"[0]);
         
@@ -74,12 +73,10 @@ public class DialogueReader : MonoBehaviour
         }
         else
         {
-            Actor a = System.Array.Find(actors, Actor => Actor.id == lines[0][0]);
-            nameBox.text = a.name;
-            portrait.sprite = a.portrait;
+            ReadNextLine();
         }
 
-        textBox.text = lines[0].Substring(2);
+        // textBox.text = lines[0].Substring(3);
 
         box.SetActive(true);
         inDialogue = true;
@@ -89,18 +86,37 @@ public class DialogueReader : MonoBehaviour
     void ReadNextLine()
     {
         i++;
-        if (lines[i] == null)
+        if (i == actors.Length - 1)
         {
             CloseDialogue();
+            return;
         }
 
-        if (lines[0][1] == ':')
+        if (lines[i][0] == '/')
+        {
+            ReadNextLine();
+        }
+
+        // second check on i for when function return from comment at EOF
+        if (i == actors.Length)
+        {
+            CloseDialogue();
+            return;
+        }
+
+        if (lines[i][1] == ':')
         {
             Actor a = System.Array.Find(actors, Actor => Actor.id == lines[i][0]);
             nameBox.text = a.name;
             portrait.sprite = a.portrait;
+            line = lines[i].Substring(3);
         }
-        textBox.text = lines[i].Substring(2);
+        else
+        {
+            line = lines[i].Substring(2);
+        }
+
+        StartCoroutine("PrintLine");
 
     }
 
@@ -126,6 +142,8 @@ public class DialogueReader : MonoBehaviour
                 if (printingLine)
                 {
                     StopCoroutine("PrintLine");
+                    textBox.text = lines[i].Substring(3);
+                    printingLine = false;
                 }
                 else
                 {
@@ -142,10 +160,31 @@ public class DialogueReader : MonoBehaviour
             yield break;
         }
         printingLine = true;
-        foreach (char letter in lines[i].ToCharArray())
+        textBox.text = "";
+        for (int j=0; j < line.Length; j++)
         {
-            // text += letter;
-            yield return null;
+            // print tags all at once
+            if (line[j] == '<')
+            {
+                // compiles text of tag into a string
+                // prints string in full, not by character
+                // full tag will disappear, 
+                // but printing by char will reveal tag until it is complete
+                string tag = "";
+                while (line[j] != '>')
+                {
+                    tag += line[j];
+                    j++;
+                }
+                tag += line[j];
+                textBox.text += tag;
+            }
+            else
+            { 
+                textBox.text += line[j];
+            }
+            yield return new WaitForSeconds(0.03f);
         }
+        printingLine = false;
     }
 }

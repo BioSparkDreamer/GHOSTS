@@ -442,6 +442,9 @@ MonoBehaviour:
   - id: 66
     name: Bingus
     portrait: {fileID: 21300000, guid: 49873a31413b6d446ba49bc24b4756fe, type: 3}
+  - id: 69
+    name: Elton
+    portrait: {fileID: 21300000, guid: 2de2f799521eda842a1e8a740a3eba8c, type: 3}
   canvas: {fileID: 145821228}
   canvasPrefab: {fileID: 1873622022293194859, guid: ee9782c025f02e140b8d6f1925af4eb9, type: 3}
   boxPrefab: {fileID: 1433500777062981208, guid: 78d014f2395b5044d912f01daf914e2d, type: 3}
