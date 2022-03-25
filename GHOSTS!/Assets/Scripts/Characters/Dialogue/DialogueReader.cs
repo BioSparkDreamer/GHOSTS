@@ -183,7 +183,7 @@ public class DialogueReader : MonoBehaviour
             { 
                 textBox.text += line[j];
             }
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.02f);
         }
         printingLine = false;
     }
