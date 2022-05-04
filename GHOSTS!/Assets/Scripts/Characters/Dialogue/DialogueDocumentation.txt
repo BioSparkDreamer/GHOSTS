@@ -6,7 +6,7 @@ DialogueReader.cs:
 ~ reads dialogue
 ~ intended to be game-agnostic, not specifically designed to only take our dialogue
 
-The script takes the path of a file starting in root directory "[ProjectName]/Assets/Resources" and reads that dialogue to the screen.
+The script takes the path of a file starting in root directory "[ProjectName]/Assets/Resources" and reads that dialogue to the screen. 
 
 =STYLE GUIDE=
 * When an instance of the DialogueReader component is added to an actor, an array of actors should be declared as well, each with names, IDs, and sprites. IDs will be a single character and will be used to identify a speaker. 
