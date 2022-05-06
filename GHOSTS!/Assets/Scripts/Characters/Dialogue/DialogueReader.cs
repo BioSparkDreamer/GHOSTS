@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class Actor
+{
+    // class used by DialogueReader
+    // helps make script writing and parsing easier
+
+    public char id;         // key var; used to identify speaker
+    public string name;     // appears in dialogue box
+    public Sprite portrait;
+}
+
 public class DialogueReader : MonoBehaviour
 {
     public Actor[] actors;      // array of all actors that appear in any dialogue with this actor (character)
